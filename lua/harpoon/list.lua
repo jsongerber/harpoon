@@ -63,7 +63,12 @@ function HarpoonList:append(item)
             { list = self, item = item, idx = new_index }
         )
         table.insert(self.items, item)
-        self._index = new_index
+
+        local item_bufnr = vim.fn.bufnr(item.value, false)
+        local current_bufnr = vim.api.nvim_get_current_buf()
+        if current_bufnr == item_bufnr then
+            self._index = new_index
+        end
     end
 
     return self
@@ -72,6 +77,7 @@ end
 ---@return HarpoonList
 function HarpoonList:prepend(item)
     item = item or self.config.create_list_item(self.config)
+
     local index = index_of(self.items, item, self.config)
     Logger:log("HarpoonList:prepend", { item = item, index = index })
     if index == -1 then
@@ -81,7 +87,12 @@ function HarpoonList:prepend(item)
             { list = self, item = item, idx = new_index }
         )
         table.insert(self.items, 1, item)
-        self._index = new_index
+
+        local item_bufnr = vim.fn.bufnr(item.value, false)
+        local current_bufnr = vim.api.nvim_get_current_buf()
+        if current_bufnr == item_bufnr then
+            self._index = new_index
+        end
     end
 
     return self
