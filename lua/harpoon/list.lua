@@ -57,11 +57,13 @@ function HarpoonList:append(item)
     local index = index_of(self.items, item, self.config)
     Logger:log("HarpoonList:append", { item = item, index = index })
     if index == -1 then
+        local new_index = #self.items + 1
         Extensions.extensions:emit(
             Extensions.event_names.ADD,
-            { list = self, item = item, idx = #self.items + 1 }
+            { list = self, item = item, idx = new_index }
         )
         table.insert(self.items, item)
+        self._index = new_index
     end
 
     return self
@@ -73,11 +75,13 @@ function HarpoonList:prepend(item)
     local index = index_of(self.items, item, self.config)
     Logger:log("HarpoonList:prepend", { item = item, index = index })
     if index == -1 then
+        local new_index = 1
         Extensions.extensions:emit(
             Extensions.event_names.ADD,
-            { list = self, item = item, idx = 1 }
+            { list = self, item = item, idx = new_index }
         )
         table.insert(self.items, 1, item)
+        self._index = new_index
     end
 
     return self
